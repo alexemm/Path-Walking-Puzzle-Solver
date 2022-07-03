@@ -48,7 +48,7 @@ def ham_path_solution_to_edges(solution):
     return edges
 
 
-def plot_grid(g, ham_path=None):
+def plot_grid(g, ham_path=None, out_path=None):
     edges = []
     if ham_path is not None:
         edges = ham_path_solution_to_edges(ham_path)
@@ -57,14 +57,14 @@ def plot_grid(g, ham_path=None):
     pos = {(x, y): (y, -x) for x, y in g.nodes()}
     g_edges = g.edges
     colors = ["red" if (i, j) in edges or (j, i) in edges else "black" for (i, j) in g_edges]
-    print(len([e for e in colors if e == 'red']))
-    print(edges)
 
     nx.draw(g, pos=pos,
             node_color='lightgreen',
             edge_color=colors,
             # with_labels=True,
             node_size=600)
+    if out_path is not None:
+        plt.savefig(out_path, format="PNG")
     plt.show()
 
 
@@ -94,13 +94,13 @@ def get_neighbor_representation(g):
 
 
 def solve(filename):
+    singular_filename = filename.split("/")[-1]
     starting_point, non_walk_points, walk_points, finishing_points = read_txt(filename)
     g = setup_graph(starting_point, non_walk_points, walk_points, finishing_points)
-
+    plot_grid(g, out_path=f"graphs/{singular_filename}.png")
     solution = hamilton2(get_neighbor_representation(g), (5, 0))
     # solution = hamilton(get_neighbor_representation(g), len(g.nodes), (5,0))
-    print(solution)
-    plot_grid(g, solution)
+    plot_grid(g, solution, out_path=f"solution_graphs/{singular_filename}.png")
 
 
 if __name__ == '__main__':
