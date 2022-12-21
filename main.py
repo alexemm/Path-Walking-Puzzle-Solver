@@ -3,6 +3,7 @@ import networkx as nx
 
 from models.dynamic import hamilton2
 
+# TODO: If finishing node exists, then add extra node and link finishing node to it and nothing else
 
 def read_txt(filename):
     with open(filename) as f:
@@ -56,7 +57,7 @@ def plot_grid(g, ham_path=None, out_path=None):
     plt.figure(figsize=(6, 6))
     pos = {(x, y): (y, -x) for x, y in g.nodes()}
     g_edges = g.edges
-    colors = ["red" if (i, j) in edges or (j, i) in edges else "black" for (i, j) in g_edges]
+    colors = ["red" if (i, j) in edges or (j, i) in edges else "white" for (i, j) in g_edges]
 
     nx.draw(g, pos=pos,
             node_color='lightgreen',
@@ -104,5 +105,5 @@ def solve(filename):
 
 
 if __name__ == '__main__':
-    solve("instances/instance1")
+    solve("instances/nodelists/instance1")
 
